@@ -226,6 +226,8 @@ if(${LIBCREATE_BUILD_TESTS} AND ${GTEST_FOUND})
       NAME ${LIBCREATE_TEST}
       COMMAND ${LIBCREATE_TEST}
     )
+
+    set_property(TARGET ${LIBCREATE_TEST} PROPERTY FOLDER "Tests")
   endforeach()
 else()
   message("No GTest installation found. Skipping tests.")
