@@ -64,7 +64,9 @@ int main(int argc, char** argv) {
   std::cout << std::endl << "Press center 'Clean' button to disconnect and end program" << std::endl;
 
   // There's a delay between switching modes and when the robot will accept drive commands
-  usleep(100000);
+  //usleep(100000);
+  std::this_thread::sleep_for(std::chrono::microseconds(100000));
+
 
   // Command robot to drive a radius of 0.15 metres at 0.2 m/s
   robot->driveRadius(0.2, 0.15);
@@ -76,7 +78,9 @@ int main(int argc, char** argv) {
     std::cout << std::fixed << std::setprecision(2) << "\rOdometry (x, y, yaw): ("
               << pose.x << ", " << pose.y << ", " << pose.yaw << ")      ";
 
-    usleep(10000);  // 10 Hz
+    //usleep(10000);  // 10 Hz
+	std::this_thread::sleep_for(std::chrono::microseconds(10000));
+
   }
 
   std::cout << std::endl;

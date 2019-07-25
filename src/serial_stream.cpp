@@ -12,7 +12,7 @@ namespace create {
     // Request from Create that we want a stream containing all packets
     uint8_t numPackets = data->getNumPackets();
     std::vector<uint8_t> packetIDs = data->getPacketIDs();
-    uint8_t streamReq[2 + numPackets];
+    std::vector<uint8_t> streamReq(2 + numPackets);
     streamReq[0] = OC_STREAM;
     streamReq[1] = numPackets;
     int i = 2;
@@ -22,7 +22,7 @@ namespace create {
     }
 
     // Start streaming data
-    send(streamReq, 2 + numPackets);
+    send(streamReq.data(), 2 + numPackets);
 
     expectedNumBytes = data->getTotalDataBytes() + numPackets;
 

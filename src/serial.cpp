@@ -1,4 +1,6 @@
 #include <iostream>
+#include<chrono>
+#include<thread>
 
 #include "create/serial.h"
 #include "create/types.h"
@@ -24,7 +26,8 @@ namespace create {
     port.set_option(serial_port::baud_rate(baud));
     port.set_option(serial_port::flow_control(serial_port::flow_control::none));
 
-    usleep(1000000);
+    //usleep(1000000);
+	std::this_thread::sleep_for(std::chrono::microseconds(1000000));
 
     if (port.is_open()) {
       callback = cb;

@@ -35,6 +35,16 @@ POSSIBILITY OF SUCH DAMAGE.
 #ifndef CREATE_SERIAL_STREAM_H
 #define CREATE_SERIAL_STREAM_H
 
+#if defined(WIN32)
+#define NOMINMAX
+#if defined(_WINSOCKAPI_)
+#include <windows.h>
+#else
+#define _WINSOCKAPI_
+#include <windows.h>
+#undef _WINSOCKAPI_
+#endif
+#endif
 #include <boost/asio.hpp>
 #include <boost/thread.hpp>
 #include <boost/thread/condition_variable.hpp>

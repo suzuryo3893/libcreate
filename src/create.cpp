@@ -4,6 +4,9 @@
 #include <cmath>
 #include <ctime>
 #include <assert.h>
+#include<thread>
+#include<chrono>
+#include<vector>
 
 #include "create/create.h"
 
@@ -282,7 +285,8 @@ namespace create {
         CERR("[create::Create] ", "failed to connect over serial: timeout");
       }
       else {
-        usleep(retryInterval * 1000000);
+        //usleep(retryInterval * 1000000);
+		  std::this_thread::sleep_for(std::chrono::microseconds((long long)(retryInterval * 1000000)));
         COUT("[create::Create] ", "retrying to establish serial connection...");
       }
     }
@@ -563,7 +567,7 @@ namespace create {
                           const float* durations) const {
     int i, j;
     uint8_t duration;
-    uint8_t cmd[2 * songLength + 3];
+    std::vector<uint8_t> cmd(2 * songLength + 3);
     cmd[0] = OC_SONG;
     cmd[1] = songNumber;
     cmd[2] = songLength;
@@ -577,7 +581,7 @@ namespace create {
       j++;
     }
 
-    return serial->send(cmd, 2 * songLength + 3);
+    return serial->send(cmd.data(), 2 * songLength + 3);
   }
 
   bool Create::playSong(const uint8_t& songNumber) const {

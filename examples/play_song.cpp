@@ -76,7 +76,8 @@ int main(int argc, char** argv) {
   robot->defineSong(0, song_len, notes, durations);
 
   // Sleep to provide time for song to register
-  usleep(1000000);
+  //usleep(1000000);
+  std::this_thread::sleep_for(std::chrono::microseconds(1000000));
 
   std::cout << "Playing a song!" << std::endl;
 
@@ -84,7 +85,8 @@ int main(int argc, char** argv) {
   robot->playSong(0); 
 
   // Expect the song to take about four seconds
-  usleep(4500000);
+  //usleep(4500000);
+  std::this_thread::sleep_for(std::chrono::microseconds(4500000));
 
   // Call disconnect to avoid leaving robot in Full mode
   robot->disconnect();

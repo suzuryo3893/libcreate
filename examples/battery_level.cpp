@@ -73,7 +73,9 @@ int main(int argc, char** argv) {
     // Print battery percentage
     std::cout << "\rBattery level: " << (battery_charge / battery_capacity) * 100.0 << "%";
 
-    usleep(100000);  // 10 Hz
+    //usleep(100000);  // 10 Hz
+	std::this_thread::sleep_for(std::chrono::microseconds(100000));
+
   }
 
   std::cout << std::endl;

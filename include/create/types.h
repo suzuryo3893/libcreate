@@ -184,6 +184,7 @@ namespace create {
     OC_TOGGLE_STREAM = 150,
   };
 
+#if !defined(WIN32)
   enum BAUDCODE {
     BAUD_300 = 0,
     BAUD_600 = 1,
@@ -198,6 +199,7 @@ namespace create {
     BAUD_57600 = 10,
     BAUD_115200 = 11
   };
+#endif
 
   enum CreateMode {
     MODE_OFF = 0,

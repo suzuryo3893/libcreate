@@ -89,7 +89,9 @@ int main(int argc, char** argv) {
     enable_spot_led = !enable_spot_led;
     power_led++;
 
-    usleep(250000);  // 5 Hz
+    //usleep(250000);  // 5 Hz
+	std::this_thread::sleep_for(std::chrono::microseconds(250000));
+
   }
 
   std::cout << std::endl;

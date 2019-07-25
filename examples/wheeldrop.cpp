@@ -75,7 +75,9 @@ int main(int argc, char** argv) {
     else
       robot->setPowerLED(0);  // Green
 
-    usleep(10000);  // 10 Hz
+    //usleep(10000);  // 10 Hz
+	std::this_thread::sleep_for(std::chrono::microseconds(10000));
+
   }
 
   std::cout << std::endl;

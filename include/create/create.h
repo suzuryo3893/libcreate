@@ -32,10 +32,17 @@ POSSIBILITY OF SUCH DAMAGE.
 #ifndef CREATE_H
 #define CREATE_H
 
+#if defined(WIN32)
+#define _WINSOCKAPI_
+#define NOMINMAX
+#include <windows.h>
+#undef _WINSOCKAPI_
+#else
+#include <unistd.h>
+#endif
 #include <boost/shared_ptr.hpp>
 #include <boost/numeric/ublas/matrix.hpp>
 #include <string>
-#include <unistd.h>
 
 #include "create/serial_stream.h"
 #include "create/serial_query.h"

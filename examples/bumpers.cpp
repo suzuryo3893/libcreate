@@ -110,7 +110,9 @@ int main(int argc, char** argv) {
               << " ]" << std::endl;
     std::cout << std::endl;
 
-    usleep(100000);  // 10 Hz
+    //usleep(100000);  // 10 Hz
+	std::this_thread::sleep_for(std::chrono::microseconds(100000));
+
   }
 
   std::cout << std::endl;

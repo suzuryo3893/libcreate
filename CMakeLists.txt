@@ -10,7 +10,11 @@ project(libcreate)
 
 set(PACKAGE_VERSION 1.6.1)
 
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+
 option(LIBCREATE_BUILD_TESTS "Enable the build of tests." ON)
+option(LIBCREATE_BUILD_EXAMPLES "Enable the build of examples." ON)
+option(LIBCREATE_BUILD_SHARED "Build the shared library." ON)
 
 find_package(Boost REQUIRED COMPONENTS system thread)
 find_package(Threads REQUIRED)
@@ -27,6 +31,7 @@ include_directories(
 )
 
 # Declare cpp library
+if(LIBCREATE_BUILD_SHARED)
 add_library(${LIBRARY_NAME} SHARED
   src/create.cpp
   src/serial.cpp
@@ -36,6 +41,17 @@ add_library(${LIBRARY_NAME} SHARED
   src/packet.cpp
   src/types.cpp
 )
+else()
+add_library(${LIBRARY_NAME} STATIC
+  src/create.cpp
+  src/serial.cpp
+  src/serial_stream.cpp
+  src/serial_query.cpp
+  src/data.cpp
+  src/packet.cpp
+  src/types.cpp
+)
+endif()
 
 # Manually link to thread library for build on ARM
 if(THREADS_HAVE_PTHREAD_ARG)
@@ -52,6 +68,8 @@ target_link_libraries(${LIBRARY_NAME}
   ${Boost_LIBRARIES}
 )
 
+include_directories(${Boost_INCLUDE_DIR})
+
 # Declare example executables
 set(EXAMPLES
   battery_level
@@ -63,6 +81,7 @@ set(EXAMPLES
   wheeldrop
 )
 
+if(LIBCREATE_BUILD_EXAMPLES)
 foreach(EXAMPLE ${EXAMPLES})
   add_executable(${EXAMPLE} examples/${EXAMPLE}.cpp)
 
@@ -70,7 +89,9 @@ foreach(EXAMPLE ${EXAMPLES})
     ${Boost_LIBRARIES}
     ${LIBRARY_NAME}
   )
+  set_property(TARGET ${EXAMPLE} PROPERTY FOLDER "Examples")
 endforeach()
+endif()
 
 #################
 # Configuration #
@@ -152,16 +173,32 @@ install(
   DESTINATION ${SHARE_INSTALL_DIR}
 )
 
+# Install examples
+if(LIBCREATE_BUILD_EXAMPLES)
+install(
+  TARGETS ${EXAMPLES}
+  EXPORT "${TARGETS_EXPORT_NAME}"
+  LIBRARY DESTINATION "${LIB_INSTALL_DIR}"
+  ARCHIVE DESTINATION "${LIB_INSTALL_DIR}"
+  RUNTIME DESTINATION "${BIN_INSTALL_DIR}"
+  INCLUDES DESTINATION "${INCLUDE_INSTALL_DIR}"
+)
+endif()
+
+
 ###########
 # Testing #
 ###########
 
 if(LIBCREATE_BUILD_TESTS)
   find_package(GTest)
-  include_directories(${GTEST_INCLUDE_DIRS})
+  include_directories(${GTEST_INCLUDE_DIR})
+else()
+set(GTEST_FOUND OFF)
 endif()
 
-if(LIBCREATE_BUILD_TESTS AND ${GTEST_FOUND})
+
+if(${LIBCREATE_BUILD_TESTS} AND ${GTEST_FOUND})
   message("GTest installation found. Building tests.")
 
   enable_testing()

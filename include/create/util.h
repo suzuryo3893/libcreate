@@ -32,7 +32,8 @@ POSSIBILITY OF SUCH DAMAGE.
 #ifndef CREATE_UTIL_H
 #define CREATE_UTIL_H
 
-#include <sys/time.h>
+//#include <sys/time.h>
+#include<chrono>
 
 #define COUT(prefix,msg) (std::cout<<prefix<<msg<<std::endl)
 #define CERR(prefix,msg) (std::cerr<<prefix<<msg<<std::endl)
@@ -62,9 +63,10 @@ namespace create {
     /** Get a timestamp for the current time in micro-seconds.
      */
     static timestamp_t getTimestamp() {
-      struct timeval now;
-      gettimeofday(&now, NULL);
-      return now.tv_usec + (timestamp_t) now.tv_sec * 1000000;
+      //struct timeval now;
+      //gettimeofday(&now, NULL);
+      //return now.tv_usec + (timestamp_t) now.tv_sec * 1000000;
+		return std::chrono::time_point_cast<std::chrono::microseconds>(std::chrono::system_clock::now()).time_since_epoch().count();
     }
 
     inline bool willFloatOverflow(const float a, const float b) {
