@@ -44,7 +44,9 @@ namespace create {
 
   void SerialQuery::flushInput() {
     // Only works with POSIX support
-#if !defined(_MSC_VER)
+#if defined(WIN32)
+	  PurgeComm(port.lowest_layer().native_handle(), PURGE_RXCLEAR);
+#else
     tcflush(port.lowest_layer().native_handle(), TCIFLUSH);
 #endif
   }
